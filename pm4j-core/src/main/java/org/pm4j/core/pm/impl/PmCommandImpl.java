@@ -626,6 +626,13 @@ public class PmCommandImpl extends PmObjectBase implements PmCommand, Cloneable 
     return vetoCommandDecorator == null;
   }
 
+  /**
+   * Resets the change flag of its validation parent, which recursively resets the change flag of its
+   * descendants {@link PmDataInputBase#setPmValueChanged(boolean)}.
+   * 
+   * @param changeCommandHistory
+   * @return
+   */
   protected NaviLink afterDo(boolean changeCommandHistory) {
     if (LOG.isDebugEnabled()) {
       LOG.debug("Command '" + PmUtil.getPmLogString(this) + "' successfully executed.");

@@ -128,6 +128,7 @@ public final class PmValidationApi {
   /**
    * Clears not yet validated values within the scope of this PM.
    */
+  // TODO okossak Verwendung in GLOBE prüfen und in clearInvalidValuesOfDescendants umbenennen
   public static void clearInvalidValuesOfSubtree(PmObject pm) {
     for (PmObject p : pm.getPmConversation().getPmsWithInvalidValues()) {
       if (PmUtil.isChild(pm, p)) {
@@ -143,6 +144,9 @@ public final class PmValidationApi {
    * @param pm The element to check.
    * @return <code>true</code> if all attributes do not have an error state.
    */
+  // TODO okossak Visitor pattern einführen?
+  // getPmChildrenOfType() returns direct children, but not all descendants
+  // if a child not of type PmAttr has children of type PmAttr, those will not be asked
   public static boolean hasValidAttributes(PmElement pm) {
     for (PmAttr<?> a : PmUtil.getPmChildrenOfType(pm, PmAttr.class)) {
       if (!a.isPmValid()) {

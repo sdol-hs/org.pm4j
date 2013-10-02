@@ -20,13 +20,4 @@ public class PmLabelImpl extends PmObjectBase implements PmLabel {
     super(pmParent);
   }
 
-  @Override
-  public void clearPmInvalidValues() {
-    // nothing to do.
-  }
-
-  @Override
-  protected MetaData makeMetaData() {
-    return new MetaData();
-  }
 }

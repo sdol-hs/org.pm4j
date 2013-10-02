@@ -405,7 +405,8 @@ public class PmTableImpl2
 
   /** Calls {@link #updatePmTable(org.pm4j.core.pm.PmTable2.UpdateAspect...)}. */
   @Override
-  public void resetPmValues() {
+  public void resetPmValues(ResetReadonlyType resetReadonlyType) {
+    super.resetPmValues(resetReadonlyType);
     updatePmTable();
   }
 

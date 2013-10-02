@@ -10,6 +10,7 @@ import org.pm4j.core.pm.PmAttr;
 import org.pm4j.core.pm.PmAttrProxy;
 import org.pm4j.core.pm.PmEvent;
 import org.pm4j.core.pm.PmOptionSet;
+import org.pm4j.core.pm.PmDataInput.ResetReadonlyType;
 import org.pm4j.core.pm.annotation.PmAttrCfg;
 import org.pm4j.core.pm.annotation.PmInject;
 import org.pm4j.core.pm.annotation.PmInject.Mode;
@@ -47,7 +48,7 @@ public abstract class FilterItemPm<T_ITEM extends FilterItem> extends PmBeanBase
     @Override
     protected void afterValueChange(FilterCompareDefinition oldValue, FilterCompareDefinition newValue) {
       getPmBean().setFilterByValue(null);
-      compOp.resetPmValues();
+      compOp.resetPmValues(ResetReadonlyType.EXCLUDING_READONLY);
       reGenerateFilterByValueAttr();
     }
 

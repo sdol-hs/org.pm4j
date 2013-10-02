@@ -129,9 +129,10 @@ public abstract class PmObjectBase implements PmObject {
   }
 
   /**
+   * Constructor of PmObjectBase.
+   * 
    * @param pmParent
-   *          The context, this PM was created in. E.g. a session, a command, a
-   *          list field.
+   *          The context, this PM was created in, e.g. a session, a command, a list field.
    */
   public PmObjectBase(PmObject pmParent) {
     this.pmParent = (PmObjectBase) pmParent;
@@ -1049,6 +1050,9 @@ public abstract class PmObjectBase implements PmObject {
    */
   public void clearPmInvalidValues() {
     PmEventApi.ensureThreadEventSource(this);
+    for (PmMessage m : PmMessageUtil.getPmErrors(this)) {
+      this.getPmConversationImpl()._clearPmMessage(m);
+    }
     PmValidationApi.clearInvalidValuesOfSubtree(this);
   }
 

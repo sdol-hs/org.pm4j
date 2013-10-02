@@ -7,6 +7,7 @@ import org.pm4j.common.util.collection.IterableUtil;
 import org.pm4j.core.pm.PmAttr;
 import org.pm4j.core.pm.PmAttrProxy;
 import org.pm4j.core.pm.PmEvent;
+import org.pm4j.core.pm.PmDataInput.ResetReadonlyType;
 import org.pm4j.core.pm.annotation.PmAttrCfg;
 import org.pm4j.core.pm.annotation.PmBeanCfg;
 import org.pm4j.core.pm.annotation.PmOptionCfg;
@@ -91,7 +92,7 @@ public class PmFilterItemBase extends PmBeanBase<FilterItem> implements PmFilter
     @Override
     protected void afterValueChange(FilterByDefinition oldValue, FilterByDefinition newValue) {
       getPmBean().setFilterByValue(null);
-      getCompOp().resetPmValues();
+      getCompOp().resetPmValues(ResetReadonlyType.EXCLUDING_READONLY);
       reGenerateFilterByValueAttr();
     }
 

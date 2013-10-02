@@ -1,15 +1,14 @@
 package org.pm4j.core.util.reflection;
 
-import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Set;
 
+import junit.framework.TestCase;
+
 import org.pm4j.core.pm.PmBean;
 import org.pm4j.core.pm.impl.PmBeanBase;
-
-import junit.framework.TestCase;
 
 public class ClassUtilTest extends TestCase {
 

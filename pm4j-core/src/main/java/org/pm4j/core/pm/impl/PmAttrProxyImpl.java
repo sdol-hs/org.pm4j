@@ -101,9 +101,9 @@ public class PmAttrProxyImpl<T_VALUE> extends PmAttrImpl<T_VALUE> implements PmA
   }
 
   @Override
-  public void resetPmValues() {
+  public void resetPmValues(ResetReadonlyType resetReadonlyType) {
     if (delegate != null) {
-      delegate.resetPmValues();
+      delegate.resetPmValues(resetReadonlyType);
     }
   }
 

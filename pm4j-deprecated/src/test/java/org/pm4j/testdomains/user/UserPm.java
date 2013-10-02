@@ -9,6 +9,7 @@ import org.pm4j.core.pm.PmAttrString;
 import org.pm4j.core.pm.PmBean;
 import org.pm4j.core.pm.PmCommand;
 import org.pm4j.core.pm.PmObject;
+import org.pm4j.core.pm.PmDataInput.ResetReadonlyType;
 import org.pm4j.core.pm.annotation.PmAttrCfg;
 import org.pm4j.core.pm.annotation.PmBeanCfg;
 import org.pm4j.core.pm.annotation.PmCommandCfg;
@@ -77,7 +78,7 @@ public class UserPm extends PmBeanBase<User> implements PmBean<User> {
   @PmCommandCfg(beforeDo=CLEAR)
   public final PmCommand cmdClear = new PmCommandImpl(this) {
     @Override protected void doItImpl() {
-      resetPmValues();
+      resetPmValues(ResetReadonlyType.EXCLUDING_READONLY);
     }
   };
 

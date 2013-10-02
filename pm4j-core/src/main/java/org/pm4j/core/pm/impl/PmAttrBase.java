@@ -37,7 +37,6 @@ import org.pm4j.core.pm.PmAttr;
 import org.pm4j.core.pm.PmBean;
 import org.pm4j.core.pm.PmCommandDecorator;
 import org.pm4j.core.pm.PmConstants;
-import org.pm4j.core.pm.PmDataInput;
 import org.pm4j.core.pm.PmElement;
 import org.pm4j.core.pm.PmEvent;
 import org.pm4j.core.pm.PmMessage;
@@ -289,15 +288,11 @@ public abstract class PmAttrBase<T_PM_VALUE, T_BEAN_VALUE>
   public void clearPmInvalidValues() {
     boolean wasValid = isPmValid();
     if (dataContainer != null) {
-      if (dataContainer.invalidValue != null) {
-        dataContainer.invalidValue = null;
-      }
+      dataContainer.invalidValue = null;
     }
 
     if (!wasValid) {
-      for (PmMessage m : PmMessageUtil.getPmErrors(this)) {
-        this.getPmConversationImpl()._clearPmMessage(m);
-      }
+      super.clearPmInvalidValues();
       PmEventApi.firePmEvent(this, getOwnMetaData().validationChangeEventMask);
     }
   }
@@ -516,27 +511,51 @@ public abstract class PmAttrBase<T_PM_VALUE, T_BEAN_VALUE>
     }
   }
 
-  @Override
-  public void resetPmValues() {
-    boolean isWritable = !isPmReadonly();
-    if (isWritable) {
-      PmCacheApi.clearPmCache(this);
-      this.valueWasSet = false;
-    }
-    clearPmInvalidValues();
-    if (isWritable) {
-      T_PM_VALUE dv = getDefaultValue();
-      // TODO olaf: handle scalar values!
-//      if (dv == null && getOwnMetaData().primitiveType) {
-//        getOwnMetaData().
-//      }
-      setValue(dv);
-    }
-
-    // For composite attribute PM's: reset the children.
-    List<PmDataInput> children = PmUtil.getPmChildrenOfType(this, PmDataInput.class);
-    for (PmDataInput child : children) {
-      child.resetPmValues();
+  /**
+   * Resets the values of editable data input PMs to their default value, can include or exclude 
+   * data input PMs in ReadOnly state.
+   * 
+   * @param resetReadonlyType Controls whether data input PMs in ReadOnly state are reset.
+   *        The parameter of type PmResetType can have two valid values:
+   *        <ul>
+   *          <li>INCLUDING_READONLY: data input PMs in ReadOnly state are reset.</li>
+   *          <li>EXCLUDING_READONLY: data input PMs in ReadOnly state are NOT reset.</li>
+   *        </ul>
+   */
+  @Override public void resetPmValues(ResetReadonlyType resetReadonlyType) {
+    assert resetReadonlyType != null;
+    switch (resetReadonlyType) {
+      case EXCLUDING_READONLY:
+        boolean isWritable = !isPmReadonly();
+        if (isWritable) {
+          PmCacheApi.clearPmCache(this);
+          this.valueWasSet = false;
+        }
+        clearPmInvalidValues();
+        if (isWritable) {
+          T_PM_VALUE dv = getDefaultValue();
+          // TODO olaf: handle scalar values!
+          //        if (dv == null && getOwnMetaData().primitiveType) {
+          //          getOwnMetaData().
+          //        }
+          setValue(dv);
+        }
+        break;
+      case INCLUDING_READONLY:
+        PmCacheApi.clearPmCache(this);
+        this.valueWasSet = false;
+        clearPmInvalidValues();
+        T_PM_VALUE dv = getDefaultValue();
+        T_BEAN_VALUE dvBean = convertPmValueToBackingValue(dv);
+        setBackingValue(dvBean);
+        // TODO olaf: handle scalar values!
+        //        if (dv == null && getOwnMetaData().primitiveType) {
+        //          getOwnMetaData().
+        //        }
+        break;
+      default:
+        throw new PmRuntimeException("Unknown option of " 
+          + ResetReadonlyType.class.getSimpleName() + "." + resetReadonlyType);
     }
   }
 

@@ -7,6 +7,7 @@ import org.pm4j.core.exception.PmRuntimeException;
 import org.pm4j.core.pm.PmAttrEnum;
 import org.pm4j.core.pm.PmAttrString;
 import org.pm4j.core.pm.PmCommand;
+import org.pm4j.core.pm.PmDataInput.ResetReadonlyType;
 import org.pm4j.core.pm.annotation.PmAttrCfg;
 import org.pm4j.core.pm.api.PmMessageUtil;
 import org.pm4j.navi.NaviLink;
@@ -42,7 +43,7 @@ public class PmCommandImplTest extends TestCase {
     pm.dynLinkTargetString.setValue("ruleLink2");
     assertEquals("ruleLink2", pm.cmdDynNaviRule.doItReturnString());
 
-    pm.dynLinkTargetString.resetPmValues();
+    pm.dynLinkTargetString.resetPmValues(ResetReadonlyType.EXCLUDING_READONLY);
     assertNull(pm.cmdDynNaviRule.doItReturnString());
 
 

@@ -6,9 +6,6 @@ import org.pm4j.core.exception.PmConverterException;
 import org.pm4j.core.pm.annotation.PmAttrCfg;
 import org.pm4j.core.pm.impl.PmAttrImpl;
 
-
-
-
 /**
  * Presentation model for attributes. It adds presentation logic aspects for
  * attribute value handling to the base interface {@link PmObject}.
@@ -19,11 +16,11 @@ import org.pm4j.core.pm.impl.PmAttrImpl;
  * Details on how to implement application specific attribute logic see
  * {@link PmAttrImpl}.
  *
- * @param <T> The attribute value type provided for the view.
+ * @param <T_PM> The attribute value type provided for the view.
  *
  * @author olaf boede
  */
-public interface PmAttr<T> extends PmObject, PmDataInput {
+public interface PmAttr<T_PM> extends PmDataInput {
 
 	/**
 	 * Provides the actual value of the attribute.
@@ -32,13 +29,13 @@ public interface PmAttr<T> extends PmObject, PmDataInput {
 	 *
 	 * @return The attribute value.
 	 */
-	T getValue();
+	T_PM getValue();
 
 	/**
 	 * @param value
 	 *          The new value.
 	 */
-	void setValue(T value);
+	void setValue(T_PM value);
 
 	/**
 	 * @return The string for the current value.
@@ -100,7 +97,10 @@ public interface PmAttr<T> extends PmObject, PmDataInput {
 
 	/**
 	 * Reset the value to <code>null</code> or the optional default value definition.
-	 */
+   * @deprecated The method is deprecated, because it does not reset attributes in ReadOnly state.
+   *             Please use {@link #resetPmValues(ResetReadonlyType)} instead.
+   */
+  @Deprecated
 	@Override
 	void resetPmValues();
 
